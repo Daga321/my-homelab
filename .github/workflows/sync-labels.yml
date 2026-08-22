@@ -335,7 +335,7 @@ jobs:
           add-paths: |
             .github/labels.yml
           labels: |
-            automation
+            area:automation
           draft: false
 
       - name: Request maintainer review
