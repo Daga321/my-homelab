@@ -30,6 +30,14 @@ types:
     color: "DCAFC2"
     description: "Security-related issue or concern."
 
+  workflow:
+    color: "C9B8E8"
+    description: "Related to creating or improving an operational workflow."
+
+  infrastructure:
+    color: "B8D8D0"
+    description: "Related to homelab infrastructure, systems, hardware, or platform requirements."
+
 areas:
   docker:
     color: "B8D8F0"

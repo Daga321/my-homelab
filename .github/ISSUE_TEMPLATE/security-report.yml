@@ -1,6 +1,6 @@
 name: "🛡️ Security Report"
 description: Report potential vulnerabilities or security-related issues.
-title: "[Security]: "
+title: "[🛡️ Security]: "
 labels:
   - type:security
 body:
