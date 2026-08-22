@@ -1,0 +1,203 @@
+name: Label Issues From Form
+
+"on":
+  issues:
+    types:
+      - opened
+      - edited
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to classify
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  label-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install YAML dependency
+        run: npm install --no-save js-yaml
+
+      - name: Apply labels based on issue form fields
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.eventName === 'workflow_dispatch'
+              ? Number(context.payload.inputs.issue_number)
+              : context.payload.issue.number;
+            const labelsConfigPath = '.github/labels.yml';
+
+            if (!fs.existsSync(labelsConfigPath)) {
+              core.warning('No .github/labels.yml found. Skipping automatic labeling.');
+              return;
+            }
+
+            const issue = context.eventName === 'workflow_dispatch'
+              ? (await github.rest.issues.get({ owner, repo, issue_number })).data
+              : context.payload.issue;
+            const issueBody = issue.body || '';
+            const labelsConfig = yaml.load(fs.readFileSync(labelsConfigPath, 'utf8')) || {};
+            const areaConfig = labelsConfig.areas || labelsConfig.area || {};
+            const priorityConfig = labelsConfig.priorities || labelsConfig.priority || {};
+            const typeConfig = labelsConfig.types || labelsConfig.type || {};
+            const kindConfig = labelsConfig.kinds || labelsConfig.kind || {};
+
+            const isActive = (metadata) => metadata && metadata.deprecated !== true;
+            const activeAreas = new Set(Object.entries(areaConfig)
+              .filter(([, metadata]) => isActive(metadata))
+              .map(([name]) => name));
+            const activePriorities = new Set(Object.entries(priorityConfig)
+              .filter(([, metadata]) => isActive(metadata))
+              .map(([name]) => name));
+            const activeTypes = new Set(Object.entries(typeConfig)
+              .filter(([, metadata]) => isActive(metadata))
+              .map(([name]) => `type:${name}`));
+            const activeKinds = new Set(Object.entries(kindConfig)
+              .filter(([, metadata]) => isActive(metadata))
+              .map(([name]) => `kind:${name}`));
+
+            if (!activeAreas.size && !activePriorities.size) {
+              core.warning('No area/priority configuration found in .github/labels.yml. Skipping.');
+              return;
+            }
+
+            const issueLabelNames = (issue.labels || []).map((label) =>
+              typeof label === 'string' ? label : label.name
+            );
+            const staticLabels = issueLabelNames.filter((label) =>
+              label.startsWith('type:') || label.startsWith('kind:')
+            );
+            core.info(`Issue #${issue_number}`);
+            core.info(`Issue Form/template labels detected: ${staticLabels.join(', ') || 'none'}`);
+            for (const label of staticLabels) {
+              const valid = label.startsWith('type:') ? activeTypes.has(label) : activeKinds.has(label);
+              if (!valid) {
+                core.warning(`Ignoring invalid or deprecated static label ${label}; it is not an active label in .github/labels.yml.`);
+              }
+            }
+
+            const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            // Parses issue form markdown output by heading label, e.g.:
+            // ### Area
+            //
+            // docker
+            const extractFieldValue = (body, fieldLabel) => {
+              const pattern = new RegExp(
+                `^###\\s*${escapeRegExp(fieldLabel)}\\s*\\r?\\n([\\s\\S]*?)(?=^###\\s|$)`,
+                'im'
+              );
+              const match = body.match(pattern);
+              if (!match) return null;
+
+              const value = match[1]
+                .split(/\r?\n/)
+                .map((line) => line.trim())
+                .find((line) => line.length > 0 && !line.startsWith('<!--'));
+
+              return value || null;
+            };
+
+            const normalize = (value) =>
+              String(value || '')
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '-');
+
+            const areaValue = normalize(extractFieldValue(issueBody, 'Area'));
+            const priorityValue = normalize(extractFieldValue(issueBody, 'Priority'));
+
+            const targetAreaLabel = areaValue && activeAreas.has(areaValue) ? `area:${areaValue}` : null;
+            const targetPriorityLabel =
+              priorityValue && activePriorities.has(priorityValue) ? `priority:${priorityValue}` : null;
+
+            core.info(`Area selected: ${areaValue || 'none'}`);
+            core.info(`Priority selected: ${priorityValue || 'none'}`);
+            if (areaValue && !targetAreaLabel) {
+              core.warning(`Requested area label area:${areaValue} is not an active label in .github/labels.yml; it will not be applied.`);
+            }
+            if (priorityValue && !targetPriorityLabel) {
+              core.warning(`Requested priority label priority:${priorityValue} is not an active label in .github/labels.yml; it will not be applied.`);
+            }
+
+            if (!targetAreaLabel && !targetPriorityLabel) {
+              core.info('No valid Area or Priority found in issue form. No label changes applied.');
+              return;
+            }
+
+            const issueLabelsResponse = await github.rest.issues.listLabelsOnIssue({
+              owner,
+              repo,
+              issue_number,
+              per_page: 100
+            });
+
+            const currentLabels = issueLabelsResponse.data.map((label) => label.name);
+            const activeManagedLabels = new Set([
+              ...[...activeAreas].map((value) => `area:${value}`),
+              ...[...activePriorities].map((value) => `priority:${value}`)
+            ]);
+
+            const labelsToRemove = currentLabels.filter((label) => {
+              if (label.startsWith('area:') && activeManagedLabels.has(label)) {
+                return targetAreaLabel ? label !== targetAreaLabel : false;
+              }
+              if (label.startsWith('priority:') && activeManagedLabels.has(label)) {
+                return targetPriorityLabel ? label !== targetPriorityLabel : false;
+              }
+              return false;
+            });
+
+            for (const labelName of labelsToRemove) {
+              await github.rest.issues.removeLabel({
+                owner,
+                repo,
+                issue_number,
+                name: labelName
+              });
+              core.info(`Removed label: ${labelName}`);
+            }
+
+            const labelsToAdd = [];
+            if (targetAreaLabel && !currentLabels.includes(targetAreaLabel)) {
+              labelsToAdd.push(targetAreaLabel);
+            }
+            if (targetPriorityLabel && !currentLabels.includes(targetPriorityLabel)) {
+              labelsToAdd.push(targetPriorityLabel);
+            }
+
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number,
+                labels: labelsToAdd
+              });
+              core.info(`Added labels: ${labelsToAdd.join(', ')}`);
+            }
+
+            if (!labelsToAdd.length && !labelsToRemove.length) {
+              core.info('Issue labels are already aligned with Area/Priority values.');
+            }
