@@ -5,7 +5,7 @@
 # <parent>:<subtype>
 #
 # Example:
-#   type:
+#   types:
 #     bug:
 #       color: "D73A4A"
 #       description: "Something is not working."
