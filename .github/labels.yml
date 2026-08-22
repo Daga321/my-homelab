@@ -1,0 +1,87 @@
+# .github/labels.yml
+# Source of truth for repository labels.
+#
+# Labels are defined hierarchically and generated using:
+# <parent>:<subtype>
+#
+# Example:
+#   type:
+#     bug:
+#       color: "D73A4A"
+#       description: "Something is not working."
+#
+# becomes:
+#   type:bug
+
+types:
+  bug:
+    color: "D73A4A"
+    description: "Something is not working or behaving unexpectedly."
+
+  documentation:
+    color: "0075CA"
+    description: "Documentation-related issue or request."
+
+  stack:
+    color: "A2EEEF"
+    description: "Related to the creation or management of a homelab stack."
+
+  security:
+    color: "B60205"
+    description: "Security-related issue or concern."
+
+areas:
+  docker:
+    color: "2496ED"
+    description: "Related to Docker containers, images, Compose, or container configuration."
+
+  network:
+    color: "1D76DB"
+    description: "Related to networking, connectivity, routing, DNS, or network configuration."
+
+  storage:
+    color: "5319E7"
+    description: "Related to storage, volumes, disks, mounts, backups, or data persistence."
+
+  automation:
+    color: "7057FF"
+    description: "Related to automation, scripts, workflows, or automated processes."
+
+  documentation:
+    color: "0E8A16"
+    description: "Related to the documentation system, content, or documentation tooling."
+
+priorities:
+  low:
+    color: "C5DEF5"
+    description: "Low priority. Can be addressed when time and resources are available."
+
+  medium:
+    color: "FBCA04"
+    description: "Medium priority. Should be addressed as part of normal project progress."
+
+  high:
+    color: "D93F0B"
+    description: "High priority. Should be addressed before lower-priority work."
+
+  critical:
+    color: "B60205"
+    description: "Critical priority. Requires immediate attention."
+
+kinds:
+  new:
+    color: "84B6EB"
+    description: "Introduces a new stack, capability, or functionality."
+
+  improvement:
+    color: "A2EEEF"
+    description: "Improves or extends an existing stack or capability."
+
+community:
+  good first issue:
+    color: "7057FF"
+    description: "Suitable for contributors who are new to the project."
+
+  help wanted:
+    color: "008672"
+    description: "Additional community assistance is welcome."
