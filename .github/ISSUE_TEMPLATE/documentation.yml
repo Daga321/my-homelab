@@ -1,4 +1,4 @@
-name: Documentation
+name: "📚 Documentation"
 description: Report missing, incorrect, outdated, or unclear documentation.
 title: "[Docs]: "
 labels:
