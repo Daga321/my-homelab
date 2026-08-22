@@ -1,0 +1,87 @@
+name: Documentation
+description: Report missing, incorrect, outdated, or unclear documentation.
+title: "[Docs]: "
+labels:
+  - type:documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for documentation gaps, clarity issues, and requested updates.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - documentation
+        - automation
+        - docker
+        - network
+        - storage
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - low
+        - medium
+        - high
+        - critical
+    validations:
+      required: true
+
+  - type: input
+    id: doc_area
+    attributes:
+      label: Documentation area or section
+      placeholder: e.g., stacks/immich, README quickstart, backup strategy docs
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Type of documentation change
+      options:
+        - missing content
+        - incorrect information
+        - outdated information
+        - unclear explanation
+        - structural improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_state
+    attributes:
+      label: Current state
+      description: Explain what is currently documented and what is wrong or missing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: requested_change
+    attributes:
+      label: Requested change
+      description: Describe exactly what should be updated.
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Relevant location or link
+      placeholder: e.g., docs/networking.md or URL
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+    validations:
+      required: false

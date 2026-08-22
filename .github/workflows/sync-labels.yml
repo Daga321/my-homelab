@@ -1,0 +1,383 @@
+name: Sync Labels
+
+on:
+  push:
+    paths:
+      - .github/labels.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  sync-labels:
+    if: github.event_name == 'workflow_dispatch' || github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out default branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install YAML dependency
+        run: npm install --no-save js-yaml
+
+      - name: Synchronize labels from source of truth
+        id: sync
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const labelsPath = '.github/labels.yml';
+
+            const fileContent = fs.readFileSync(labelsPath, 'utf8');
+            const config = yaml.load(fileContent) || {};
+
+            const groupPrefixMap = {
+              types: 'type',
+              areas: 'area',
+              priorities: 'priority',
+              kinds: 'kind'
+            };
+
+            const prefixToGroupMap = {
+              type: 'types',
+              area: 'areas',
+              priority: 'priorities',
+              kind: 'kinds'
+            };
+
+            const ensureObject = (obj, key) => {
+              if (!obj[key] || typeof obj[key] !== 'object') {
+                obj[key] = {};
+              }
+            };
+
+            const normalizeColor = (color) => String(color || '').replace(/^#/, '').toUpperCase();
+
+            const desiredLabels = new Map();
+
+            for (const [group, prefix] of Object.entries(groupPrefixMap)) {
+              const entries = config[group] || {};
+              for (const [name, metadata] of Object.entries(entries)) {
+                const labelName = `${prefix}:${name}`;
+                desiredLabels.set(labelName, {
+                  name: labelName,
+                  color: normalizeColor(metadata.color),
+                  description: metadata.description || '',
+                  deprecated: metadata.deprecated === true,
+                  sourceGroup: group,
+                  sourceName: name
+                });
+              }
+            }
+
+            const community = config.community || {};
+            for (const [name, metadata] of Object.entries(community)) {
+              desiredLabels.set(name, {
+                name,
+                color: normalizeColor(metadata.color),
+                description: metadata.description || '',
+                deprecated: metadata.deprecated === true,
+                sourceGroup: 'community',
+                sourceName: name
+              });
+            }
+
+            const existing = await github.paginate(github.rest.issues.listLabelsForRepo, {
+              owner,
+              repo,
+              per_page: 100
+            });
+
+            const existingLabels = new Map(existing.map((label) => [label.name, label]));
+
+            const created = [];
+            const updated = [];
+            const removed = [];
+            const preserved = [];
+            const deprecatedAdded = [];
+
+            // Reconcile desired labels: create missing and update mismatched labels.
+            for (const desired of desiredLabels.values()) {
+              const current = existingLabels.get(desired.name);
+
+              if (!current) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: desired.name,
+                  color: desired.color,
+                  description: desired.description
+                });
+                created.push(desired.name);
+                core.info(`Created label: ${desired.name}`);
+                continue;
+              }
+
+              const currentColor = normalizeColor(current.color);
+              const currentDescription = current.description || '';
+              const needsUpdate = currentColor !== desired.color || currentDescription !== desired.description;
+
+              if (needsUpdate) {
+                await github.rest.issues.updateLabel({
+                  owner,
+                  repo,
+                  name: current.name,
+                  new_name: desired.name,
+                  color: desired.color,
+                  description: desired.description
+                });
+                updated.push(desired.name);
+                core.info(`Updated label: ${desired.name}`);
+              }
+            }
+
+            const labelsMissingFromYaml = existing.filter((label) => !desiredLabels.has(label.name));
+            let yamlChanged = false;
+
+            const addDeprecatedToConfig = (label) => {
+              const entry = {
+                color: normalizeColor(label.color),
+                description: label.description || '',
+                deprecated: true
+              };
+
+              if (label.name.includes(':')) {
+                const [prefix, ...rest] = label.name.split(':');
+                const subtype = rest.join(':');
+                const targetGroup = prefixToGroupMap[prefix];
+
+                if (targetGroup) {
+                  ensureObject(config, targetGroup);
+                  if (!config[targetGroup][subtype]) {
+                    config[targetGroup][subtype] = entry;
+                  } else {
+                    config[targetGroup][subtype].deprecated = true;
+                  }
+                  deprecatedAdded.push(`${prefix}:${subtype}`);
+                  return;
+                }
+              }
+
+              ensureObject(config, 'community');
+              if (!config.community[label.name]) {
+                config.community[label.name] = entry;
+              } else {
+                config.community[label.name].deprecated = true;
+              }
+              deprecatedAdded.push(label.name);
+            };
+
+            const getHistoricalUsage = async (labelName) => {
+              const queryString = `repo:${owner}/${repo} label:"${labelName.replace(/"/g, '\\"')}"`;
+
+              const query = `
+                query LabelUsage($queryString: String!, $first: Int!) {
+                  search(type: ISSUE, query: $queryString, first: $first) {
+                    issueCount
+                    nodes {
+                      ... on Issue {
+                        __typename
+                        number
+                        url
+                        state
+                      }
+                      ... on PullRequest {
+                        __typename
+                        number
+                        url
+                        state
+                      }
+                    }
+                  }
+                }
+              `;
+
+              const result = await github.graphql(query, {
+                queryString,
+                first: 20
+              });
+
+              const totalCount = result.search.issueCount || 0;
+              const refs = (result.search.nodes || []).map((node) => ({
+                type: node.__typename,
+                number: node.number,
+                url: node.url,
+                state: node.state
+              }));
+
+              return { totalCount, refs };
+            };
+
+            // Labels missing from YAML are either deleted (never used) or preserved/deprecated (historically used).
+            for (const label of labelsMissingFromYaml) {
+              const usage = await getHistoricalUsage(label.name);
+
+              if (usage.totalCount > 0) {
+                preserved.push({
+                  name: label.name,
+                  count: usage.totalCount,
+                  refs: usage.refs
+                });
+
+                addDeprecatedToConfig(label);
+                yamlChanged = true;
+
+                core.info(
+                  `Preserved label ${label.name}: found in ${usage.totalCount} historical issue(s)/PR(s).`
+                );
+              } else {
+                await github.rest.issues.deleteLabel({
+                  owner,
+                  repo,
+                  name: label.name
+                });
+
+                removed.push(label.name);
+                core.info(`Removed unused label: ${label.name}`);
+              }
+            }
+
+            if (yamlChanged) {
+              const updatedYaml = yaml.dump(config, {
+                lineWidth: 120,
+                noRefs: true,
+                sortKeys: false
+              });
+              fs.writeFileSync(labelsPath, updatedYaml);
+              core.info('Updated .github/labels.yml with deprecated labels preserved for history.');
+            }
+
+            const formatLabelList = (items) => {
+              if (!items.length) return '- None';
+              return items.map((item) => `- \`${item}\``).join('\n');
+            };
+
+            const formatRemovedList = () => {
+              if (!removed.length) return '- None';
+              return removed.map((item) => `- \`${item}\` - never used`).join('\n');
+            };
+
+            const formatPreservedList = () => {
+              if (!preserved.length) return '- None';
+
+              return preserved.map((item) => {
+                const refs = item.refs
+                  .map((ref) => `${ref.type === 'PullRequest' ? 'PR' : 'Issue'} #${ref.number}`)
+                  .join(', ');
+
+                const refText = refs ? ` - historically used by ${refs}` : '';
+                return `- \`${item.name}\` - found in ${item.count} issue(s)/PR(s)${refText}`;
+              }).join('\n');
+            };
+
+            const prBody = [
+              'This pull request was automatically generated by the labels synchronization workflow.',
+              '',
+              '### Created',
+              formatLabelList(created),
+              '',
+              '### Updated',
+              formatLabelList(updated),
+              '',
+              '### Removed',
+              formatRemovedList(),
+              '',
+              '### Preserved (historical usage)',
+              formatPreservedList(),
+              '',
+              '### Deprecated',
+              formatLabelList(deprecatedAdded)
+            ].join('\n');
+
+            const changesDetected = created.length > 0 || updated.length > 0 || removed.length > 0 || yamlChanged;
+            const alreadySynced = !changesDetected;
+
+            if (alreadySynced) {
+              core.info('Repository labels are already synchronized.');
+            }
+
+            core.setOutput('yaml_changed', yamlChanged ? 'true' : 'false');
+            core.setOutput('already_synced', alreadySynced ? 'true' : 'false');
+            core.setOutput('pr_body', prBody);
+            core.setOutput('created_count', String(created.length));
+            core.setOutput('updated_count', String(updated.length));
+            core.setOutput('removed_count', String(removed.length));
+            core.setOutput('preserved_count', String(preserved.length));
+            core.setOutput('deprecated_count', String(deprecatedAdded.length));
+
+      - name: Create or update automation pull request
+        if: steps.sync.outputs.yaml_changed == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/labels/sync
+          base: ${{ github.event.repository.default_branch }}
+          commit-message: 'chore(labels): preserve historically used labels as deprecated'
+          title: 'chore(labels): synchronize labels and preserve deprecated history'
+          body: ${{ steps.sync.outputs.pr_body }}
+          add-paths: |
+            .github/labels.yml
+          labels: |
+            area:automation
+          draft: false
+
+      - name: Request maintainer review
+        if: steps.sync.outputs.yaml_changed == 'true' && steps.cpr.outputs.pull-request-number != ''
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pull_number = Number('${{ steps.cpr.outputs.pull-request-number }}');
+
+            // Best effort: request review from repository owner/maintainer account.
+            try {
+              await github.rest.pulls.requestReviewers({
+                owner,
+                repo,
+                pull_number,
+                reviewers: [owner]
+              });
+              core.info(`Requested review from ${owner} for PR #${pull_number}.`);
+            } catch (error) {
+              core.warning(`Could not request review from ${owner}: ${error.message}`);
+            }
+
+      - name: Workflow summary
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const alreadySynced = '${{ steps.sync.outputs.already_synced }}' === 'true';
+
+            if (alreadySynced) {
+              core.summary.addRaw('Repository labels are already synchronized.\n');
+            } else {
+              core.summary
+                .addHeading('Label synchronization completed')
+                .addRaw(`Created: ${{ steps.sync.outputs.created_count }}\n`)
+                .addRaw(`Updated: ${{ steps.sync.outputs.updated_count }}\n`)
+                .addRaw(`Removed: ${{ steps.sync.outputs.removed_count }}\n`)
+                .addRaw(`Preserved (historical): ${{ steps.sync.outputs.preserved_count }}\n`)
+                .addRaw(`Deprecated added to YAML: ${{ steps.sync.outputs.deprecated_count }}\n`);
+            }
+
+            await core.summary.write();

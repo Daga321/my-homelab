@@ -1,0 +1,94 @@
+name: Security Report
+description: Report potential vulnerabilities or security-related issues.
+title: "[Security]: "
+labels:
+  - type:security
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For sensitive or critical vulnerabilities, prefer private disclosure via GitHub Security Advisories:
+        https://github.com/Daga321/my-homelab/security/advisories/new
+
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Disclosure considerations
+      options:
+        - label: I understand that critical or sensitive vulnerabilities should be reported privately.
+          required: true
+
+  - type: input
+    id: affected_component
+    attributes:
+      label: Affected component
+      placeholder: e.g., reverse proxy, auth flow, image build pipeline
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - docker
+        - network
+        - storage
+        - automation
+        - documentation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: Operational priority for triage.
+      options:
+        - low
+        - medium
+        - high
+        - critical
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - low
+        - medium
+        - high
+        - critical
+    validations:
+      required: true
+
+  - type: textarea
+    id: vulnerability_description
+    attributes:
+      label: Vulnerability description
+    validations:
+      required: true
+
+  - type: textarea
+    id: potential_impact
+    attributes:
+      label: Potential impact
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction or evidence
+      description: Provide proof of concept, logs, traces, or screenshots when safe to share.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+    validations:
+      required: false

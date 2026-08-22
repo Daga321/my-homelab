@@ -1,0 +1,125 @@
+name: New Stack
+description: Propose a new homelab stack with a clear MVP scope and acceptance criteria.
+title: "[New Stack]: "
+labels:
+  - type:stack
+  - kind:new
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only for completely new stacks.
+        Future enhancements after initial delivery should be tracked in separate Improve Stack issues.
+
+  - type: input
+    id: stack_name
+    attributes:
+      label: Proposed stack name
+      placeholder: e.g., paperless-ngx, monitoring-core, media-indexer
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - docker
+        - network
+        - storage
+        - automation
+        - documentation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - low
+        - medium
+        - high
+        - critical
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem being solved
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: Define the target outcome for initial delivery.
+    validations:
+      required: true
+
+  - type: textarea
+    id: category
+    attributes:
+      label: Category or area details
+      description: Explain how this stack fits the selected area.
+    validations:
+      required: true
+
+  - type: textarea
+    id: components
+    attributes:
+      label: Proposed components
+      description: Services, containers, modules, and integrations.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: External systems, preconditions, and integration dependencies.
+    validations:
+      required: true
+
+  - type: textarea
+    id: infra_requirements
+    attributes:
+      label: Infrastructure requirements
+      description: Compute, network, storage, secrets, and runtime constraints.
+    validations:
+      required: true
+
+  - type: textarea
+    id: mvp_scope
+    attributes:
+      label: MVP scope
+      description: Keep this explicitly bounded for first delivery.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: documentation_requirements
+    attributes:
+      label: Documentation requirements
+      description: List required docs updates for onboarding, operation, and troubleshooting.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+    validations:
+      required: false
