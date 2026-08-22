@@ -1,4 +1,4 @@
-name: Security Report
+name: "🛡️ Security Report"
 description: Report potential vulnerabilities or security-related issues.
 title: "[Security]: "
 labels:
