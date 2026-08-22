@@ -1,15 +1,15 @@
-name: "🔧 Improve Stack"
-description: Propose improvements or extensions to an existing homelab stack.
-title: "[🔧 Improve Stack]: "
+name: "🔄 Improve Workflow"
+description: Propose a focused improvement to an existing automation or operational workflow.
+title: "[🔄 Improve Workflow]: "
 labels:
-  - type:stack
+  - type:workflow
   - kind:improvement
 body:
   - type: input
-    id: existing_stack
+    id: existing_workflow
     attributes:
-      label: Existing stack
-      placeholder: e.g., immich, paperless-ngx, observability
+      label: Existing workflow
+      placeholder: e.g., sync-labels, deployment pipeline, backup verification
     validations:
       required: true
 
@@ -17,12 +17,9 @@ body:
     id: area
     attributes:
       label: Area
+      description: Workflow improvements are classified under automation.
       options:
-        - docker
-        - network
-        - storage
         - automation
-        - documentation
     validations:
       required: true
 
@@ -49,6 +46,7 @@ body:
     id: proposed_improvement
     attributes:
       label: Proposed improvement
+      description: Describe the specific change without expanding into unrelated work.
     validations:
       required: true
 
@@ -56,7 +54,7 @@ body:
     id: motivation
     attributes:
       label: Motivation
-      description: Why should this be prioritized now?
+      description: Explain the problem, operational cost, or risk this addresses.
     validations:
       required: true
 
@@ -64,6 +62,15 @@ body:
     id: expected_impact
     attributes:
       label: Expected impact
+      description: Describe expected reliability, security, maintenance, or usability effects.
+    validations:
+      required: true
+
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and migration considerations
+      description: Note affected users, existing runs, data, secrets, or rollback requirements.
     validations:
       required: true
 

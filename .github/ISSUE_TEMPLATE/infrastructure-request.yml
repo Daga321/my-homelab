@@ -1,0 +1,108 @@
+name: "🏗️ Infrastructure Request"
+description: Propose a focused infrastructure change for DNS, hardware, storage, networking, or systems.
+title: "[🏗️ Infrastructure]: "
+labels:
+  - type:infrastructure
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for planned infrastructure work rather than a bug or a new application stack.
+
+  - type: input
+    id: affected_component
+    attributes:
+      label: Affected component
+      placeholder: e.g., DNS resolver, router, NAS, host, switch, storage volume
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - network
+        - storage
+        - docker
+        - automation
+        - documentation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - low
+        - medium
+        - high
+        - critical
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_state
+    attributes:
+      label: Current state or limitation
+      description: Describe the existing setup and the problem with it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: requested_change
+    attributes:
+      label: Requested infrastructure change
+      description: Describe the proposed change and its intended result.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and expected impact
+      description: Explain why this is needed and what it should improve.
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_requirements
+    attributes:
+      label: Technical requirements
+      description: Include hardware specifications, capacity, network details, DNS records, compatibility, or service requirements as applicable.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies and constraints
+      description: List budget, availability, maintenance windows, migrations, downtime, security, or vendor constraints.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: documentation_requirements
+    attributes:
+      label: Documentation requirements
+      description: List inventory, configuration, operating, backup, and recovery documentation that must be updated.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+    validations:
+      required: false

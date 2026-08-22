@@ -1,21 +1,21 @@
-name: "🆕 New Stack"
-description: Propose a new homelab stack with a clear MVP scope and acceptance criteria.
-title: "[🆕 New Stack]: "
+name: "⚙️ Create Workflow"
+description: Propose a new automation or operational workflow with a defined first version.
+title: "[⚙️ Create Workflow]: "
 labels:
-  - type:stack
+  - type:workflow
   - kind:new
 body:
   - type: markdown
     attributes:
       value: |
-        Use this form only for completely new stacks.
-        Future enhancements after initial delivery should be tracked in separate Improve Stack issues.
+        Use this form for a completely new workflow.
+        Keep the first version bounded; future enhancements should be separate Improve Workflow issues.
 
   - type: input
-    id: stack_name
+    id: workflow_name
     attributes:
-      label: Proposed stack name
-      placeholder: e.g., paperless-ngx, monitoring-core, media-indexer
+      label: Proposed workflow name
+      placeholder: e.g., label synchronization, backup verification, deployment promotion
     validations:
       required: true
 
@@ -23,12 +23,9 @@ body:
     id: area
     attributes:
       label: Area
+      description: New workflows are classified under automation.
       options:
-        - docker
-        - network
-        - storage
         - automation
-        - documentation
     validations:
       required: true
 
@@ -48,6 +45,7 @@ body:
     id: problem
     attributes:
       label: Problem being solved
+      description: What recurring task, risk, or gap does this workflow address?
     validations:
       required: true
 
@@ -55,47 +53,39 @@ body:
     id: objective
     attributes:
       label: Objective
-      description: Define the target outcome for initial delivery.
+      description: Define the outcome the initial workflow must achieve.
     validations:
       required: true
 
   - type: textarea
-    id: category
+    id: trigger
     attributes:
-      label: Category or area details
-      description: Explain how this stack fits the selected area.
+      label: Trigger and inputs
+      description: Explain what starts the workflow and what information it needs.
     validations:
       required: true
 
   - type: textarea
-    id: components
+    id: outputs
     attributes:
-      label: Proposed components
-      description: Services, containers, modules, and integrations.
+      label: Expected outputs
+      description: Describe changes, notifications, artifacts, or other results.
     validations:
       required: true
 
   - type: textarea
     id: dependencies
     attributes:
-      label: Dependencies
-      description: External systems, preconditions, and integration dependencies.
+      label: Dependencies and permissions
+      description: List systems, secrets, tools, APIs, and permissions required.
     validations:
       required: true
 
   - type: textarea
-    id: infra_requirements
+    id: scope
     attributes:
-      label: Infrastructure requirements
-      description: Compute, network, storage, secrets, and runtime constraints.
-    validations:
-      required: true
-
-  - type: textarea
-    id: mvp_scope
-    attributes:
-      label: MVP scope
-      description: Keep this explicitly bounded for first delivery.
+      label: Initial scope
+      description: Define what is included and explicitly excluded from the first version.
     validations:
       required: true
 
@@ -113,7 +103,7 @@ body:
     id: documentation_requirements
     attributes:
       label: Documentation requirements
-      description: List required docs updates for onboarding, operation, and troubleshooting.
+      description: List required setup, operation, troubleshooting, and rollback documentation.
     validations:
       required: true
 
