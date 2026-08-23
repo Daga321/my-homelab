@@ -68,16 +68,6 @@ body:
       required: true
 
   - type: textarea
-    id: acceptance_criteria
-    attributes:
-      label: Acceptance criteria
-      placeholder: |
-        - [ ] Criterion 1
-        - [ ] Criterion 2
-    validations:
-      required: true
-
-  - type: textarea
     id: additional_context
     attributes:
       label: Additional context
