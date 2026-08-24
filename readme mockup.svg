@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1900" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="title desc" style="display:block; width:100%; max-width:100%; height:auto; margin:0; padding:0; background:#0d1117;">
+  <title id="title">my_homelab terminal</title>
+  <desc id="desc">Personal infrastructure, services and experiments presented as a terminal window.</desc>
+  <style>
+    .bg { fill: #0d1117; }
+    .panel { fill: #161b22; stroke: #30363d; stroke-width: 2; }
+    .line { stroke: #30363d; stroke-width: 1; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; }
+    .prompt { fill: #8b949e; font-size: 22px; font-weight: 700; }
+    .body { fill: #c9d1d9; font-size: 17px; }
+    .muted { fill: #8b949e; font-size: 15px; }
+    .blue { fill: #58a6ff; }
+    .cyan { fill: #56b6c2; }
+    .green { fill: #7ee787; }
+    .pink { fill: #ff79c6; }
+    .card-title { fill: #f0f6fc; font-size: 17px; font-weight: 700; }
+    .card-copy { fill: #8b949e; font-size: 14px; }
+    .sticker { fill: #21262d; stroke: #58a6ff; stroke-width: 2; }
+  </style>
+
+  <rect x="1" y="1" width="1198" height="1898" rx="14" class="bg panel"/>
+  <rect x="1" y="1" width="1198" height="54" rx="14" fill="#161b22"/>
+  <rect x="1" y="38" width="1198" height="17" fill="#161b22"/>
+  <line x1="1" y1="55" x2="1199" y2="55" class="line"/>
+  <circle cx="29" cy="27" r="8" fill="#f85149"/>
+  <circle cx="55" cy="27" r="8" fill="#f0883e"/>
+  <circle cx="81" cy="27" r="8" fill="#7ee787"/>
+  <text x="600" y="33" text-anchor="middle" class="mono muted">daga321@homelab: ~</text>
+
+  <text x="55" y="105" class="mono prompt"><tspan class="cyan">&gt;</tspan> ./initialize</text>
+  <rect x="260" y="140" width="680" height="205" rx="8" class="panel"/>
+  <text x="600" y="205" text-anchor="middle" class="mono blue" font-size="34" font-weight="700">MY HOMELAB</text>
+  <line x1="360" y1="225" x2="840" y2="225" class="line"/>
+  <text x="600" y="268" text-anchor="middle" class="mono body">Personal infrastructure, services</text>
+  <text x="600" y="298" text-anchor="middle" class="mono body">and experiments.</text>
+
+  <g class="mono" text-anchor="middle">
+    <rect x="335" y="380" width="210" height="72" rx="10" class="sticker"/>
+    <text x="440" y="423" class="pink" font-size="16" font-weight="700">DOCKER</text>
+    <text x="440" y="443" class="muted" font-size="11">CONTAINERS</text>
+    <rect x="655" y="380" width="210" height="72" rx="10" class="sticker"/>
+    <text x="760" y="423" class="cyan" font-size="16" font-weight="700">HOMELAB</text>
+    <text x="760" y="443" class="muted" font-size="11">SELF-HOSTED</text>
+  </g>
+
+  <text x="55" y="515" class="mono prompt"><tspan class="cyan">&gt;</tspan> cat introduction.md</text>
+  <text x="75" y="570" class="mono body">A personal homelab built to learn, experiment, self-host</text>
+  <text x="75" y="600" class="mono body">services, automate infrastructure and document the journey.</text>
+  <text x="75" y="650" class="mono body">This repository contains the infrastructure, configurations,</text>
+  <text x="75" y="680" class="mono body">services and technical knowledge behind the environment.</text>
+  <rect x="920" y="570" width="160" height="90" rx="10" class="sticker"/>
+  <text x="1000" y="615" text-anchor="middle" class="mono blue" font-size="15" font-weight="700">LEARN</text>
+  <text x="1000" y="638" text-anchor="middle" class="mono green" font-size="15" font-weight="700">BUILD</text>
+
+  <text x="55" y="770" class="mono prompt"><tspan class="cyan">&gt;</tspan> ./explore</text>
+  <g>
+    <a href="./docs/" target="_blank">
+      <rect x="55" y="805" width="340" height="190" rx="8" class="panel"/>
+      <text x="80" y="850" class="mono card-title">[ DOCS ]</text>
+      <text x="80" y="890" class="mono card-copy">Explore the</text>
+      <text x="80" y="915" class="mono card-copy">knowledge base</text>
+      <text x="80" y="965" class="mono cyan" font-size="15">-&gt; Coming soon</text>
+    </a>
+    <a href="./stacks/" target="_blank">
+      <rect x="430" y="805" width="340" height="190" rx="8" class="panel"/>
+      <text x="455" y="850" class="mono card-title">[ STACKS ]</text>
+      <text x="455" y="890" class="mono card-copy">Services and</text>
+      <text x="455" y="915" class="mono card-copy">self-hosted apps</text>
+      <text x="455" y="965" class="mono cyan" font-size="15">-&gt; Explore</text>
+    </a>
+    <a href="#architecture">
+      <rect x="805" y="805" width="340" height="190" rx="8" class="panel"/>
+      <text x="830" y="850" class="mono card-title">[ INFRA ]</text>
+      <text x="830" y="890" class="mono card-copy">Hardware, network</text>
+      <text x="830" y="915" class="mono card-copy">and storage</text>
+      <text x="830" y="965" class="mono cyan" font-size="15">-&gt; Explore</text>
+    </a>
+  </g>
+
+  <text x="55" y="1070" class="mono prompt"><tspan class="cyan">&gt;</tspan> ./explore architecture</text>
+  <g id="architecture" class="mono">
+    <text x="95" y="1120" class="body">Network</text><text x="360" y="1120" class="cyan">-&gt; Explore</text>
+    <text x="95" y="1160" class="body">Storage</text><text x="360" y="1160" class="cyan">-&gt; Explore</text>
+    <text x="600" y="1120" class="body">Services</text><text x="865" y="1120" class="cyan">-&gt; Explore</text>
+    <text x="600" y="1160" class="body">Automation</text><text x="865" y="1160" class="cyan">-&gt; Explore</text>
+  </g>
+  <rect x="1010" y="1090" width="100" height="76" rx="10" class="sticker"/>
+  <text x="1060" y="1135" text-anchor="middle" class="mono pink" font-size="13">BUILD</text>
+  <text x="1060" y="1155" text-anchor="middle" class="mono muted" font-size="11">REPEAT</text>
+
+  <text x="55" y="1265" class="mono prompt"><tspan class="cyan">&gt;</tspan> ./status</text>
+  <rect x="55" y="1300" width="1090" height="170" rx="8" class="panel"/>
+  <text x="90" y="1350" class="mono body">Infrastructure</text><text x="700" y="1350" class="mono green">● ONLINE</text>
+  <text x="90" y="1400" class="mono body">Self-hosted stack</text><text x="700" y="1400" class="mono green">● ACTIVE</text>
+  <text x="90" y="1450" class="mono body">Documentation</text><text x="700" y="1450" class="mono cyan">● ALWAYS EVOLVING</text>
+
+  <text x="55" y="1540" class="mono prompt"><tspan class="cyan">&gt;</tspan> ./documentation</text>
+  <a href="./docs/" target="_blank">
+    <rect x="370" y="1580" width="460" height="80" rx="8" fill="#238636"/>
+    <text x="600" y="1630" text-anchor="middle" class="mono" fill="#ffffff" font-size="18" font-weight="700">[ OPEN DOCUMENTATION ]</text>
+  </a>
+  <text x="600" y="1705" text-anchor="middle" class="mono muted">The complete technical documentation lives here.</text>
+
+  <line x1="1" y1="1760" x2="1199" y2="1760" class="line"/>
+  <text x="55" y="1810" class="mono muted">STATUS: <tspan class="cyan">ONLINE</tspan></text>
+  <text x="600" y="1810" text-anchor="middle" class="mono muted">Building things, breaking things, and documenting what I learn.</text>
+  <text x="1145" y="1810" text-anchor="end" class="mono muted">(c) 2026 - daga321</text>
+  <text x="55" y="1855" class="mono muted">daga321@homelab:~$ <tspan fill="#ffffff">exit</tspan></text>
+  <rect x="320" y="1838" width="10" height="21" class="blue"/>
+</svg>
