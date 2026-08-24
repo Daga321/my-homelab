@@ -1,41 +1,27 @@
 <div align="center">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="1" bordercolor="#30363d" bgcolor="#0d1117">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
 <td>
 
-<table width="100%" cellpadding="10" cellspacing="0" bgcolor="#161b22">
+<table width="100%" cellpadding="14" cellspacing="0" bgcolor="#30363d" style="border-radius:12px 12px 0 0; overflow:hidden;">
 <tr>
-<td width="90%"><code>daga321@homelab: ~</code></td>
-<td align="right"><code><font color="#f85149">●</font> <font color="#f0883e">●</font> <font color="#7ee787">●</font></code></td>
+<td width="33%" align="left" nowrap><span style="white-space:nowrap"><font color="#f85149" size="5">●</font>&nbsp;<font color="#f0883e" size="5">●</font>&nbsp;<font color="#7ee787" size="5">●</font></span></td>
+<td width="34%" align="center" nowrap><font color="#f0f6fc">daga321@homelab: ~</font></td>
+<td width="33%"></td>
 </tr>
 </table>
+<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./initialize</strong></font></font>
+<br><br>
+<div align="center" style="display:table; margin:0 auto; border:1px solid #30363d; border-radius:12px; overflow:hidden; padding:24px;">
+<font face="monospace" color="#58a6ff" size="6"><strong>MY HOMELAB</strong></font>
+<hr>
+<font face="monospace" color="#f0f6fc">Personal infrastructure, services<br>
+and experiments.</font>
+</div>
+<br>
 
-<table width="100%" cellpadding="24" cellspacing="0" bgcolor="#0d1117">
-<tr>
-<td>
 
-<pre><font color="#8b949e">&gt;</font> <font color="#56b6c2"><strong>./initialize</strong></font>
-
-												 <font color="#58a6ff"><strong>MY HOMELAB</strong></font>
-								 Personal infrastructure, services
-												 and experiments.
-
-<font color="#7ee787">●</font> <font color="#c9d1d9">systemd: Loading core infrastructure...</font>
-<font color="#8b949e">[<font color="#58a6ff">INFO</font>] Stack: Docker Containers // Raspberry Pi Cluster // Web Services</font>
-
-<font color="#8b949e">daga321@homelab:~$</font> <font color="#ffffff">mkdocs serve --verbose</font> <font color="#58a6ff">█</font></pre>
-
-</td>
-</tr>
-</table>
-
-<table width="100%" cellpadding="8" cellspacing="0" bgcolor="#21262d">
-<tr>
-<td><code>STATUS: <font color="#56b6c2">ONLINE</font></code></td>
-<td align="right"><code>v1.0.0</code></td>
-</tr>
-</table>
 
 </td>
 </tr>
@@ -43,92 +29,81 @@
 
 </div>
 
-<p align="center">
-	<strong>Personal homelab infrastructure, services, and experiments.</strong><br>
-	A place to build, self-host, automate, learn, and document the journey.
-</p>
-
----
-
-## What is this?
-
-This repository is the source of truth for my personal homelab. It contains the infrastructure definitions, self-hosted services, experiments, and notes behind the environment.
-
-The project is organized around:
-
-- Reproducible infrastructure and containerized services.
-- Self-hosting, networking, storage, and automation.
-- Practical experiments and lessons learned.
-- Documentation that can be rebuilt and published with MkDocs.
-
-## Explore the repository
-
-<table width="100%">
+<table width="66%" align="left" cellpadding="0" cellspacing="0">
 <tr>
-<td width="33%" valign="top">
+<td align="left">
 
-<h3><a href="./docs/">Documentation</a></h3>
+<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>cat introduction.md</strong></font></font>
 
-Technical notes and the future MkDocs source.
+<p>A personal homelab built to learn, experiment, self-host<br>
+services, automate infrastructure and document the journey.</p>
 
-**Status:** Coming soon
-
-</td>
-<td width="33%" valign="top">
-
-<h3><a href="./stacks/">Stacks</a></h3>
-
-Containerized services and deployment definitions.
-
-**Status:** Active
-
-</td>
-<td width="33%" valign="top">
-
-<h3><a href="./assets/">Assets</a></h3>
-
-Images, stickers, diagrams, and other visual resources.
-
-**Status:** Growing
+<p>This repository contains the infrastructure, configurations,<br>
+services and technical knowledge behind the environment.</p>
 
 </td>
 </tr>
 </table>
+<br clear="all">
 
-## Documentation website
 
-The complete documentation website will be built with MkDocs and published when the content and deployment are ready.
+<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./explore</strong></font></font>
 
-> **Coming soon:** the project does not have a public domain yet. The live documentation URL will be added here once it exists.
+<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; width:100%;">
 
-Until then, browse the documentation source directly in [`docs/`](./docs/).
+<div style="flex:1 1 30%; min-width:180px; box-sizing:border-box; border:1px solid #30363d; border-radius:8px; padding:16px;">
 
-## Services and stickers
+<h3><font color="#f0f6fc">[ DOCS ]</font></h3>
 
-Service logos and sticker-style images will be added around this README as the homelab grows. Planned assets include Docker, Pi-hole, Traefik, Grafana, Prometheus, and Home Assistant.
+<font color="#8b949e">Explore the knowledge base</font>
 
-<table align="center">
-<tr>
-<td align="center"><code>[ DOCKER ]</code></td>
-<td align="center"><code>[ PI-HOLE ]</code></td>
-<td align="center"><code>[ TRAEFIK ]</code></td>
-<td align="center"><code>[ GRAFANA ]</code></td>
-<td align="center"><code>[ PROMETHEUS ]</code></td>
-<td align="center"><code>[ HOME ASSISTANT ]</code></td>
-</tr>
-<tr>
-<td align="center" colspan="6"><sub>Service stickers coming soon</sub></td>
-</tr>
-</table>
+<font face="monospace" color="#58a6ff">--&gt; Coming soon</font>
 
-## Status
+</div>
 
-| Area | State |
-| --- | --- |
-| Infrastructure | <font color="#7ee787">● ONLINE</font> |
-| Self-hosted stack | <font color="#7ee787">● ACTIVE</font> |
-| Documentation | <font color="#56b6c2">● ALWAYS EVOLVING</font> |
-| Public website | <font color="#f0883e">● COMING SOON</font> |
+<div style="flex:1 1 30%; min-width:180px; box-sizing:border-box; border:1px solid #30363d; border-radius:8px; padding:16px;">
+
+<h3><font color="#f0f6fc">[ STACKS ]</font></h3>
+
+<font color="#8b949e">Services and self-hosted apps</font>
+
+<font face="monospace" color="#58a6ff">--&gt; Coming soon</font>
+
+</div>
+
+<div style="flex:1 1 30%; min-width:180px; box-sizing:border-box; border:1px solid #30363d; border-radius:8px; padding:16px;">
+
+<h3><font color="#f0f6fc">[ INFRA ]</font></h3>
+
+<font color="#8b949e">Hardware, network and storage</font>
+
+<font face="monospace" color="#58a6ff">--&gt; Coming soon</font>
+
+</div>
+
+</div>
+
+<br>
+<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./status</strong></font></font>
+
+<div style="width:100%; box-sizing:border-box; border:1px solid #30363d; border-radius:8px; padding:16px; background:#0d1117;">
+
+<div style="display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid #30363d;">
+<font color="#c9d1d9">Infrastructure</font>
+<font face="monospace" color="#7ee787">● ONLINE</font>
+</div>
+
+<div style="display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid #30363d;">
+<font color="#c9d1d9">Self-hosted stack</font>
+<font face="monospace" color="#7ee787">● ACTIVE</font>
+</div>
+
+<div style="display:flex; justify-content:space-between; gap:16px; padding:8px 0;">
+<font color="#c9d1d9">Documentation</font>
+<font face="monospace" color="#56b6c2">● ALWAYS EVOLVING</font>
+</div>
+
+</div>
 
 ## Roadmap
 
@@ -140,7 +115,6 @@ Service logos and sticker-style images will be added around this README as the h
 <div align="center">
 
 <pre><font color="#8b949e">daga321@homelab:~$</font> echo "building things, breaking things, and documenting what I learn."
-<font color="#56b6c2">Building things, breaking things, and documenting what I learn.</font>
-<font color="#8b949e">STATUS: <font color="#56b6c2">ONLINE</font>                              [EOF]</font></pre>
+<font color="#56b6c2">Building things, breaking things, and documenting what I learn.</font></pre>
 
 </div>
