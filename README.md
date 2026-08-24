@@ -1,17 +1,13 @@
-<div align="center">
+<div align="center" style="box-sizing:border-box; padding:0 16px; border-left:1px solid #30363d; border-right:1px solid #30363d; border-radius:12px; overflow:hidden;">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr>
-<td>
-
-<table width="100%" cellpadding="14" cellspacing="0" bgcolor="#30363d" style="border-radius:12px 12px 0 0; overflow:hidden;">
+<table width="100%" cellpadding="14" cellspacing="0" bgcolor="#30363d" style="width:calc(100% + 32px); margin-left:-16px; margin-right:-16px; border-radius:12px 12px 0 0; overflow:hidden;">
 <tr>
 <td width="33%" align="left" nowrap><span style="white-space:nowrap"><font color="#f85149" size="5">●</font>&nbsp;<font color="#f0883e" size="5">●</font>&nbsp;<font color="#7ee787" size="5">●</font></span></td>
 <td width="34%" align="center" nowrap><font color="#f0f6fc">daga321@homelab: ~</font></td>
 <td width="33%"></td>
 </tr>
 </table>
-<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./initialize</strong></font></font>
+<font face="monospace" style="display:block; text-align:left;"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./initialize</strong></font></font>
 <br><br>
 <div align="center" style="display:table; margin:0 auto; border:1px solid #30363d; border-radius:12px; overflow:hidden; padding:24px;">
 <font face="monospace" color="#58a6ff" size="6"><strong>MY HOMELAB</strong></font>
@@ -22,12 +18,6 @@ and experiments.</font>
 <br>
 
 
-
-</td>
-</tr>
-</table>
-
-</div>
 
 <table width="66%" align="left" cellpadding="0" cellspacing="0">
 <tr>
@@ -47,7 +37,7 @@ services and technical knowledge behind the environment.</p>
 <br clear="all">
 
 
-<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./explore</strong></font></font>
+<font face="monospace" style="display:block; text-align:left;"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./explore</strong></font></font>
 
 <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; width:100%;">
 
@@ -79,12 +69,10 @@ services and technical knowledge behind the environment.</p>
 
 <font face="monospace" color="#58a6ff">--&gt; Coming soon</font>
 
-</div>
-
-</div>
+</div></div>
 
 <br>
-<font face="monospace"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./status</strong></font></font>
+<font face="monospace" style="display:block; text-align:left;"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./status</strong></font></font>
 
 <div style="width:100%; box-sizing:border-box; border:1px solid #30363d; border-radius:8px; padding:16px; background:#0d1117;">
 
@@ -102,19 +90,21 @@ services and technical knowledge behind the environment.</p>
 <font color="#c9d1d9">Documentation</font>
 <font face="monospace" color="#56b6c2">● ALWAYS EVOLVING</font>
 </div>
+</div>
+
+<br>
+<font face="monospace" style="display:block; text-align:left;"><font color="#58a6ff">&gt;</font> <font color="#f0f6fc"><strong>./documentation</strong></font></font>
+
+<div align="center" style="padding:20px; margin-top:16px;">
+<font color="#8b949e">The complete technical documentation is being built separately.</font>
+<br><br>
+<a href="#documentation-coming-soon" style="display:inline-block; border:1px solid #58a6ff; border-radius:6px; padding:10px 16px; color:#58a6ff; font-family:monospace; font-weight:bold; text-decoration:none;">[ Coming soon ]</a>
+<br><br>
 
 </div>
 
-## Roadmap
-
-- Finalize the core service stacks.
-- Complete the MkDocs navigation and pages.
-- Add architecture diagrams and operations runbooks.
-- Publish the documentation under a custom domain.
-
-<div align="center">
-
-<pre><font color="#8b949e">daga321@homelab:~$</font> echo "building things, breaking things, and documenting what I learn."
-<font color="#56b6c2">Building things, breaking things, and documenting what I learn.</font></pre>
+<div style="display:flex; justify-content:flex-end; text-align:right; width:calc(100% + 32px); margin-left:-16px; margin-right:-16px; box-sizing:border-box; padding:14px 20px; background:#30363d; border-radius:0 0 12px 12px; font-family:monospace;">
+<font color="#8b949e">(c) 2026 - daga321</font>
+</div>
 
 </div>
